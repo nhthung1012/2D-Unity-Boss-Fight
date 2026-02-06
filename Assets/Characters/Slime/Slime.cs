@@ -22,8 +22,6 @@ public class Slime : MonoBehaviour
     Transform target;
     Animator animator;
     SpriteRenderer spriteRenderer;
-
-    private bool isChasing = false;
     private bool canMove = true;
     bool canAttack = true;
 
@@ -118,7 +116,6 @@ public class Slime : MonoBehaviour
     public void StartChasing(Transform playerTransform)
     {
         target = playerTransform;
-        isChasing = true;
         currentState = SlimeState.Chasing;
         moveDirection = ((Vector2)playerTransform.position - rb.position).normalized;
     }
@@ -126,7 +123,6 @@ public class Slime : MonoBehaviour
     public void StopChasing()
     {
         target = null;
-        isChasing = false;
         EnterIdle();
     }
 
@@ -152,6 +148,7 @@ public class Slime : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!canAttack) return;
+        if (!collision.gameObject.CompareTag("Player")) return;
 
         if (collision.gameObject.TryGetComponent<IDamageable>(out var player))
         {

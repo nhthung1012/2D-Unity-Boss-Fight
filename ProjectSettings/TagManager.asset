@@ -13,11 +13,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Boss
+  - EnemyProjectiles
+  - Detection Zone
+  - Hitbox
   - 
   - 
   - 
@@ -51,6 +51,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 2353052403
+    locked: 0
+  - name: Projectiles
+    uniqueID: 4233834355
     locked: 0
   m_RenderingLayers:
   - Default

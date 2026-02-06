@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
     [SerializeField] protected Collider2D physicalCollider;
 
     [Header("Health & Knockback")]
-    protected int currentHealth;
+    public int currentHealth;
     [SerializeField] private float corpseTime = 5f;
     [SerializeField] private float knockbackDuration = 0.5f;
     [SerializeField] private float knockbackDragMultiplier = 1f; // how fast knockback slows down
@@ -85,7 +86,9 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         }
     }
 
+    public event Action OnDeath;
     public bool IsAlive => isAlive;
+    public int MaxHealth => stats.maxHealth;
 
     public virtual void TakeDamage(int damage, Vector2 knockback = default)
     {
@@ -109,7 +112,6 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         rb.linearDamping = knockbackDragMultiplier; 
 
         rb.AddForce(force, ForceMode2D.Impulse);
-        if (slime) print("Knockback applied: " + force);
 
         yield return new WaitForSeconds(knockbackDuration);
 
@@ -133,7 +135,8 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
 
         if (animator != null)
             animator.SetBool("isAlive", false);
-
+        
+        OnDeath?.Invoke();
         Destroy(gameObject, corpseTime);
     }
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ab51c07222d1b4d9cda61551aaf23f, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatsSO
-  maxHealth: 5
-  damage: 1
+  maxHealth: 200
+  damage: 10
   knockbackForce: 5
   selfKnockbackForce: 2
   attackCooldown: 1
