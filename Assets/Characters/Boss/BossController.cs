@@ -32,6 +32,7 @@ public class BossController : MonoBehaviour
     [Header("Combat")]
     [SerializeField] float decisionCooldown = 0.5f;
     [SerializeField] float meleeRange = 3f;
+    [SerializeField] HealthBar healthBar;
 
     Animator animator;
     SpriteRenderer spriteRenderer;
@@ -82,14 +83,12 @@ public class BossController : MonoBehaviour
 
         float hpPercent = (float)damageable.Health / damageable.MaxHealth;
 
-        if (hpPercent <= 0.3f)
-            phase = BossPhase.Phase3;
-        else if (hpPercent <= 0.6f)
+        if (hpPercent <= 0.5f)
             phase = BossPhase.Phase2;
+        // else if (hpPercent <= 0.6f)
+        //     phase = BossPhase.Phase2;
         else
             phase = BossPhase.Phase1;
-
-        print("Boss phase: " + phase);
     }
 
     void SetState(BossState newState)
@@ -108,7 +107,6 @@ public class BossController : MonoBehaviour
         }
 
         AttackType attack = ChooseRangedAttackByPhase();
-        print("Chosen attack: " + attack);
 
         switch (attack)
         {
@@ -138,14 +136,13 @@ public class BossController : MonoBehaviour
 
             case BossPhase.Phase2:
                 if (roll < 60) return AttackType.Ranged;
-                // else return AttackType.Laser;
                 else return AttackType.Summon;
 
-            // case BossPhase.Phase3:
-            //     // Ranged / Laser / Summon
-            //     if (roll < 30) return AttackType.Ranged;
-            //     else if (roll < 60) return AttackType.Laser;
-            //     else return AttackType.Summon;
+                // case BossPhase.Phase3:
+                //     // Ranged / Laser / Summon
+                //     if (roll < 30) return AttackType.Ranged;
+                //     else if (roll < 60) return AttackType.Laser;
+                //     else return AttackType.Summon;
         }
 
         return AttackType.Ranged;
@@ -202,7 +199,6 @@ public class BossController : MonoBehaviour
         ClearAttackTriggers();
         SetState(BossState.Idle);
         decisionTimer = decisionCooldown;
-        print("Boss exited damage state");
     }
 
     void ClearAttackTriggers()
@@ -219,6 +215,7 @@ public class BossController : MonoBehaviour
         player = playerTransform;
         SetState(BossState.Idle);
         decisionTimer = decisionCooldown;
+        healthBar.Show();
     }
 
     void FacePlayer()
@@ -234,5 +231,6 @@ public class BossController : MonoBehaviour
     {
         SetState(BossState.Dead);
         animator.SetBool("isAlive", false);
+        healthBar.Hide();
     }
 }

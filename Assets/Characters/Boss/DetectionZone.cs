@@ -13,7 +13,6 @@ public class BossDetectionZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered boss detection zone.");
             boss.ActivateBoss(other.transform);
         }
     }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GolemStats
   m_EditorClassIdentifier: Assembly-CSharp::CharacterStatsSO
   maxHealth: 100
-  damage: 2
+  damage: 5
   knockbackForce: 5
   selfKnockbackForce: 2
   attackCooldown: 0.6

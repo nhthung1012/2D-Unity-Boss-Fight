@@ -22,6 +22,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
 
     protected PlayerController playerController;
     protected Slime slime;
+    protected bool isPlayer;
 
     protected virtual void Awake()
     {
@@ -30,6 +31,8 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         physicalCollider = GetComponent<Collider2D>();
         playerController = GetComponent<PlayerController>(); 
         slime = GetComponent<Slime>();
+
+        isPlayer = playerController != null;
 
         if (stats == null)
         {
@@ -60,6 +63,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         {
             int old = currentHealth;
             currentHealth = Mathf.Clamp(value, 0, stats.maxHealth);
+            OnHealthChanged?.Invoke(currentHealth, stats.maxHealth);
 
             if (currentHealth < old && currentHealth > 0)
             {
@@ -86,6 +90,7 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
         }
     }
 
+    public event Action<int, int> OnHealthChanged;
     public event Action OnDeath;
     public bool IsAlive => isAlive;
     public int MaxHealth => stats.maxHealth;
@@ -131,12 +136,27 @@ public class DamageableCharacter : MonoBehaviour, IDamageable
     {
         isAlive = false;
         Targetable = false;
-        print("Character died: " + gameObject.name);
 
         if (animator != null)
             animator.SetBool("isAlive", false);
-        
+
         OnDeath?.Invoke();
+
+        if (isPlayer)
+        {
+            playerController.Freeze();
+            rb.linearVelocity = Vector2.zero;
+            return;
+        }
+
         Destroy(gameObject, corpseTime);
     }
+
+    public void OnDeathAnimationFinished()
+    {
+        if (!isPlayer) return;
+
+        GameManager.Instance.GameOver();
+    }
+
 }
