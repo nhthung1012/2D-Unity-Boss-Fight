@@ -22,7 +22,7 @@ This project demonstrates my ability to design and implement gameplay systems su
 - **Phase-based boss AI** that changes behavior based on remaining HP.
 - Multiple boss attacks: **melee, ranged projectiles, and enemy summoning**.
 - Shared **damage, health, and knockback system** used by player, boss, and enemies.
-- **Player health bar** attached to the character and a **screen-fixed boss health bar** for clear combat feedback.
+- **Player health bar** and a **boss health bar** for clear combat feedback.
 - Built using **Animator state machines, animation events, ScriptableObjects**, and **C#**.
 
 ---
